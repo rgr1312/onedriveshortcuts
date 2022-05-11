@@ -20,7 +20,23 @@ function Remove-OneDriveShortcut {
     }
 
     process {
+        $User = $null
 
+        switch ($PsCmdlet.ParameterSetName) {
+            "UserPrincipalName" {
+                $User = $UserPrincipalName
+            }
+            "UserObjectId" {
+                $User = $UserObjectId
+            }
+        }
+
+        $Request = @{
+            Resource = "drives/$($User)/root:/$([uri]::EscapeDataString($ShortcutName))"
+            Method = [Microsoft.PowerShell.Commands.WebRequestMethod]::Delete
+        }
+
+        return (Invoke-ODSApiRequest @Request)
     }
 
     end {
