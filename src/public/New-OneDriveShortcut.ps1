@@ -1,27 +1,22 @@
 function New-OneDriveShortcut {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory = $true)]
-        [Parameter(ParameterSetName = 'UserPrincipalName')]
-        [Parameter(ParameterSetName = 'UserObjectId')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'UserPrincipalName')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'UserObjectId')]
         [string] $Uri,
 
-        [Parameter(Mandatory = $true)]
-        [Parameter(ParameterSetName = 'UserPrincipalName')]
-        [Parameter(ParameterSetName = 'UserObjectId')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'UserPrincipalName')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'UserObjectId')]
         [string] $DocumentLibraryName,
 
-        [Parameter(Mandatory = $false)]
-        [Parameter(ParameterSetName = 'UserPrincipalName')]
-        [Parameter(ParameterSetName = 'UserObjectId')]
-        [string] $ShortcutName
+        [Parameter(Mandatory = $false, ParameterSetName = 'UserPrincipalName')]
+        [Parameter(Mandatory = $false, ParameterSetName = 'UserObjectId')]
+        [string] $ShortcutName,
 
-        [Parameter(Mandatory = $true)]
-        [Parameter(ParameterSetName = 'UserPrincipalName')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'UserPrincipalName')]
         [string] $UserPrincipalName,
 
-        [Parameter(Mandatory = $true)]
-        [Parameter(ParameterSetName = 'UserObjectId')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'UserObjectId')]
         [string] $UserObjectId
     )
 

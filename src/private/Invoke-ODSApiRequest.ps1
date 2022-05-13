@@ -14,9 +14,9 @@ function Invoke-ODSApiRequest {
     begin {
         $Token = $PsCmdlet.SessionState.PSVariable.GetValue('_ODSToken')
 
-        if (!$Token.ExpiresOn) 
-        -or (!$Token.AccessToken) 
-        -or ($Token.ExpiresOn -le (Get-Date)) {
+        if ((!$Token.ExpiresOn) -or 
+        (!$Token.AccessToken) -or
+        ($Token.ExpiresOn -le (Get-Date))) {
             Write-Error "Please run Connect-ODS first."
         }
     }
