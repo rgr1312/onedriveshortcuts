@@ -11,6 +11,10 @@ function New-OneDriveShortcut {
 
         [Parameter(Mandatory = $false, ParameterSetName = 'UserPrincipalName')]
         [Parameter(Mandatory = $false, ParameterSetName = 'UserObjectId')]
+        [string] $FolderPath,
+
+        [Parameter(Mandatory = $false, ParameterSetName = 'UserPrincipalName')]
+        [Parameter(Mandatory = $false, ParameterSetName = 'UserObjectId')]
         [string] $ShortcutName,
 
         [Parameter(Mandatory = $true, ParameterSetName = 'UserPrincipalName')]
@@ -25,6 +29,14 @@ function New-OneDriveShortcut {
     }
 
     process {
+        switch ($PSCmdlet.ParameterSetName) {
+            'UserPrincipalName' {
+                $User = $UserPrincipalName
+            }
+            'UserObjectId' {
+                $User = $UserObjectId
+            }
+        }
         $SiteDomain = ([uri]$Uri).Authority
         $SiteResource = ([uri]$Uri).AbsolutePath
 
@@ -47,7 +59,21 @@ function New-OneDriveShortcut {
         $DocumentLibraryResponse = Invoke-ODSApiRequest @DocumentLibraryRequest
         $DocumentLibraryId = $DocumentLibraryResponse.value[0].id
 
-        if (!$ShortcutName) {
+        $ItemUniqueId = 'root'
+
+        if ($FolderPath) {
+            $ItemUniqueIdUri = "$($Uri)/$($DocumentLibraryName)/$($FolderPath)"
+            $ItemUniqueIdUri = $ItemUniqueUri.replace('%', '%25')
+            $ItemUniqueIdRequest = @{
+                Resource = "sites/$($SiteIdRaw)/lists/$($DocumentLibraryId)/items?$expand=fields&$filter=contains(webUrl,'$($ItemUniqueIdUri)')"
+                Method = [Microsoft.PowerShell.Commands.WebRequestMethod]::Get
+            }
+
+            $ItemUniqueIdResponse = Invoke-ODSApiRequest @$ItemUniqueIdRequest
+            $ItemUniqueId = $ItemUniqueIdResponse.value[0].id
+        }
+
+        if (!($ShortcutName)) {
             $ShortcutName = $DocumentLibraryName
         }
 
@@ -59,7 +85,7 @@ function New-OneDriveShortcut {
                 remoteItem = @{
                     sharepointIds = @{
                         listId = $DocumentLibraryId
-                        listItemUniqueId = "root"
+                        listItemUniqueId = $ItemUniqueId
                         siteId = $SiteId
                         siteUrl = $Uri
                         webId = $WebId
