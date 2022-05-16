@@ -46,6 +46,11 @@ function New-OneDriveShortcut {
         }
 
         $SiteResponse = Invoke-ODSApiRequest @SiteRequest
+
+        if (!($SiteResponse)) {
+            Write-Error "Error retrieving SharePoint Site" -ErrorAction Stop
+        }
+
         $SiteIdRaw = $SiteResponse.id
         $SiteIdSplit = $SiteIdRaw.split(",")
         $SiteId = $SiteIdSplit[1]
@@ -57,6 +62,11 @@ function New-OneDriveShortcut {
         }
 
         $DocumentLibraryResponse = Invoke-ODSApiRequest @DocumentLibraryRequest
+
+        if (!($DocumentLibraryResponse) -or ($DocumentLibraryResponse.value.Count -eq 0)) {
+            Write-Error "Error retrieving SharePoint Document Library" -ErrorAction Stop
+        }
+
         $DocumentLibraryId = $DocumentLibraryResponse.value[0].id
         $DocumentLibraryName = $DocumentLibraryResponse.value[0].name
 
@@ -73,6 +83,11 @@ function New-OneDriveShortcut {
             }
             
             $ItemUniqueIdResponse = Invoke-ODSApiRequest @ItemUniqueIdRequest
+
+            if (!($ItemUniqueIdResponse) -or ($ItemUniqueIdResponse.value.Count -eq 0)) {
+                Write-Error "Error retrieving Document Library Item."-ErrorAction Stop
+            }
+
             $ItemUniqueId = (Select-String "[\da-zA-Z]{8}-([\da-zA-Z]{4}-){3}[\da-zA-Z]{12}" -InputObject $ItemUniqueIdResponse.value[0].eTag).Matches[0].Value
         }
 
@@ -85,8 +100,12 @@ function New-OneDriveShortcut {
                 }
     
                 $ItemUniqueNameResponse = Invoke-ODSApiRequest @ItemUniqueNameRequest
-                $ItemUniqueName = $ItemUniqueNameResponse.fields.LinkFilename
 
+                if (!($ItemUniqueNameResponse)) {
+                    Write-Error "Error retrieving Document Library Item Name." -ErrorAction Stop
+                }
+
+                $ItemUniqueName = $ItemUniqueNameResponse.fields.LinkFilename
                 $ShortcutName = $ItemUniqueName
             } else {
                 $ShortcutName = $DocumentLibrary
@@ -111,7 +130,12 @@ function New-OneDriveShortcut {
             } | ConvertTo-Json
         }
 
-        return (Invoke-ODSApiRequest @ShortcutRequest)
+        $ShortcutResponse = Invoke-ODSApiRequest @ShortcutRequest
+
+        if (!($ShortcutResponse)) {
+            Write-Error "Error creating OneDrive Shortcut." -ErrorAction Stop
+        }
+        return $ShortcutResponse
     }
 
     end {
