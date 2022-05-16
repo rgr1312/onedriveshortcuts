@@ -1,5 +1,5 @@
 function Get-OneDriveShortcut {
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = 'UserPrincipalName')]
     param(
         [Parameter(Mandatory = $true, ParameterSetName = 'UserPrincipalName')]
         [Parameter(Mandatory = $true, ParameterSetName = 'UserObjectId')]

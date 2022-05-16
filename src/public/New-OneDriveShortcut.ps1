@@ -1,5 +1,5 @@
 function New-OneDriveShortcut {
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = 'UserPrincipalName', SupportsShouldProcess)]
     param(
         [Parameter(Mandatory = $true, ParameterSetName = 'UserPrincipalName')]
         [Parameter(Mandatory = $true, ParameterSetName = 'UserObjectId')]
@@ -138,14 +138,18 @@ function New-OneDriveShortcut {
             } | ConvertTo-Json
         }
 
-        $ShortcutResponse = Invoke-ODSApiRequest @ShortcutRequest
+        if ($PSCmdlet.ShouldProcess("${User}'s OneDrive", "Creating shortcut '$($ShortcutName)'")) {
+            $ShortcutResponse = Invoke-ODSApiRequest @ShortcutRequest
 
-        if (!($ShortcutResponse)) {
-            Write-Verbose "Request: ${ShortcutRequest}"
-            Write-Verbose "Response: ${ShortcutResponse}"
-            Write-Error "Error creating OneDrive Shortcut." -ErrorAction Stop
+            if (!($ShortcutResponse)) {
+                Write-Verbose "Request: ${ShortcutRequest}"
+                Write-Verbose "Response: ${ShortcutResponse}"
+                Write-Error "Error creating OneDrive Shortcut." -ErrorAction Stop
+            }
+            return $ShortcutResponse
+        } else {
+            return
         }
-        return $ShortcutResponse
     }
 
     end {

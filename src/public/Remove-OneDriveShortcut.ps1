@@ -1,5 +1,5 @@
 function Remove-OneDriveShortcut {
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = 'UserPrincipalName', SupportsShouldProcess)]
     param(
         [Parameter(Mandatory = $true, ParameterSetName = 'UserPrincipalName')]
         [Parameter(Mandatory = $true, ParameterSetName = 'UserObjectId')]
@@ -33,15 +33,18 @@ function Remove-OneDriveShortcut {
             Method = [Microsoft.PowerShell.Commands.WebRequestMethod]::Delete
         }
 
-        $ShortcutResponse = Invoke-ODSApiRequest @ShortcutRequest
+        if ($PSCmdlet.ShouldProcess("${User}'s OneDrive", "Removing shortcut '$($ShortcutName)'")) {
+            $ShortcutResponse = Invoke-ODSApiRequest @ShortcutRequest
 
-#        if (!($ShortcutResponse)) {
-#            Write-Verbose "Request: ${ShortcutRequest}"
-#            Write-Verbose "Response: ${ShortcutResponse}"
-#            Write-Error "Error removing OneDrive Shortcut." -ErrorAction Stop
-#        }
-        
-        return $ShortcutResponse
+#            if (!($ShortcutResponse)) {
+#                Write-Verbose "Request: ${ShortcutRequest}"
+#                Write-Verbose "Response: ${ShortcutResponse}"
+#                Write-Error "Error creating OneDrive Shortcut." -ErrorAction Stop
+#            }
+            return $ShortcutResponse
+        } else {
+            return
+        }
     }
 
     end {
