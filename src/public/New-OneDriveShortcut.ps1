@@ -48,7 +48,9 @@ function New-OneDriveShortcut {
         $SiteResponse = Invoke-ODSApiRequest @SiteRequest
 
         if (!($SiteResponse)) {
-            Write-Error "Error retrieving SharePoint Site" -ErrorAction Stop
+            Write-Verbose "Request: ${SiteRequest}"
+            Write-Verbose "Response: ${SiteResponse}"
+            Write-Error "Error retrieving SharePoint Site." -ErrorAction Stop
         }
 
         $SiteIdRaw = $SiteResponse.id
@@ -64,7 +66,9 @@ function New-OneDriveShortcut {
         $DocumentLibraryResponse = Invoke-ODSApiRequest @DocumentLibraryRequest
 
         if (!($DocumentLibraryResponse) -or ($DocumentLibraryResponse.value.Count -eq 0)) {
-            Write-Error "Error retrieving SharePoint Document Library" -ErrorAction Stop
+            Write-Verbose "Request: ${DocumentLibraryRequest}"
+            Write-Verbose "Response: ${DocumentLibraryResponse}"
+            Write-Error "Error retrieving SharePoint Document Library." -ErrorAction Stop
         }
 
         $DocumentLibraryId = $DocumentLibraryResponse.value[0].id
@@ -85,6 +89,8 @@ function New-OneDriveShortcut {
             $ItemUniqueIdResponse = Invoke-ODSApiRequest @ItemUniqueIdRequest
 
             if (!($ItemUniqueIdResponse) -or ($ItemUniqueIdResponse.value.Count -eq 0)) {
+                Write-Verbose "Request: ${ItemUniqueIdRequest}"
+                Write-Verbose "Response: ${ItemUniqueIdResponse}"
                 Write-Error "Error retrieving Document Library Item."-ErrorAction Stop
             }
 
@@ -102,6 +108,8 @@ function New-OneDriveShortcut {
                 $ItemUniqueNameResponse = Invoke-ODSApiRequest @ItemUniqueNameRequest
 
                 if (!($ItemUniqueNameResponse)) {
+                    Write-Verbose "Request: ${ItemUniqueNameRequest}"
+                    Write-Verbose "Response: ${ItemUniqueNameResponse}"
                     Write-Error "Error retrieving Document Library Item Name." -ErrorAction Stop
                 }
 
@@ -133,6 +141,8 @@ function New-OneDriveShortcut {
         $ShortcutResponse = Invoke-ODSApiRequest @ShortcutRequest
 
         if (!($ShortcutResponse)) {
+            Write-Verbose "Request: ${ShortcutRequest}"
+            Write-Verbose "Response: ${ShortcutResponse}"
             Write-Error "Error creating OneDrive Shortcut." -ErrorAction Stop
         }
         return $ShortcutResponse

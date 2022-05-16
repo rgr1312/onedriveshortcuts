@@ -11,6 +11,6 @@ function Disconnect-ODS {
     }
 
     end {
-        
+        Write-Host "Disconnected."
     }
 }

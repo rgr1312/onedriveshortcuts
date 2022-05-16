@@ -20,7 +20,8 @@ function Invoke-ODSApiRequest {
         if ((!$Token.ExpiresOn) -or 
         (!$Token.AccessToken) -or
         ($Token.ExpiresOn -le (Get-Date))) {
-            Write-Error "Please run Connect-ODS first."
+            Write-Verbose "Token: ${Token}"
+            Write-Error "Please run Connect-ODS first." -ErrorAction Stop
         }
     }
 
@@ -48,7 +49,7 @@ function Invoke-ODSApiRequest {
             $Response = Invoke-WebRequest @Request
             $Response = ConvertFrom-Json $([string]::new($Response.Content))
         } catch {
-            Write-Error "Error querying Microsoft Graph: $($_)"
+            Write-Error $_
         }
 
         return $Response

@@ -17,7 +17,7 @@ function Connect-ODS {
     )
 
     begin {
-        
+        $Token = $null
     }
 
     process {
@@ -27,7 +27,8 @@ function Connect-ODS {
                     $Token = Get-MsalToken -ClientId $ClientId -TenantId $TenantId -ClientSecret $ClientSecret
                     $PsCmdlet.SessionState.PSVariable.Set('_ODSToken', $Token)
                 } catch {
-                    Write-Error "Token request using ClientSecret failed: $($_)" -ErrorAction Stop
+                    Write-Verbose $_
+                    Write-Error "Token request using ClientSecret failed." -ErrorAction Stop
                 }
             }
             'ClientCertificate' {
@@ -35,13 +36,16 @@ function Connect-ODS {
                     $Token = Get-MsalToken -ClientId $ClientId -TenantId $TenantId -ClientCertificate $ClientCertificate
                     $PsCmdlet.SessionState.PSVariable.Set('_ODSToken', $Token)
                 } catch {
-                    Write-Error "Token request using ClientCertificate failed: $($_)" -ErrorAction Stop
+                    Write-Verbose $_
+                    Write-Error "Token request using ClientCertificate failed." -ErrorAction Stop
                 }
             }
         }
     }
 
     end {
-
+        if ($Token) {
+            Write-Host "Connected!"
+        }
     }
 }

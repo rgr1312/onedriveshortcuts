@@ -28,12 +28,20 @@ function Remove-OneDriveShortcut {
             }
         }
 
-        $Request = @{
+        $ShortcutRequest = @{
             Resource = "drives/$($User)/root:/$([uri]::EscapeDataString($ShortcutName))"
             Method = [Microsoft.PowerShell.Commands.WebRequestMethod]::Delete
         }
 
-        return (Invoke-ODSApiRequest @Request)
+        $ShortcutResponse = Invoke-ODSApiRequest @ShortcutRequest
+
+#        if (!($ShortcutResponse)) {
+#            Write-Verbose "Request: ${ShortcutRequest}"
+#            Write-Verbose "Response: ${ShortcutResponse}"
+#            Write-Error "Error removing OneDrive Shortcut." -ErrorAction Stop
+#        }
+        
+        return $ShortcutResponse
     }
 
     end {
