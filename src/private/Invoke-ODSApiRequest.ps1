@@ -8,7 +8,10 @@ function Invoke-ODSApiRequest {
         [Microsoft.PowerShell.Commands.WebRequestMethod] $Method,
 
         [Parameter(Mandatory = $false)]
-        [string] $Body
+        [string] $Body,
+
+        [Parameter(Mandatory = $false)]
+        [switch] $DoNotUsePrefer
     )
 
     begin {
@@ -27,13 +30,16 @@ function Invoke-ODSApiRequest {
             ContentType = "application/json"
             Headers = @{
                 Authorization = "Bearer $($Token.AccessToken)"
-                Prefer = "apiversion=2.1"
             }
             Method = $Method
         }
 
+        if (!($DoNotUsePrefer.IsPresent)) {
+            $Request.Headers.Prefer = "apiversion=2.1"
+        }
+
         if ($Body) {
-            Request.Body = $Body
+            $Request.Body = $Body
         }
 
         $Response = $null

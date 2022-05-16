@@ -7,7 +7,7 @@ function New-OneDriveShortcut {
 
         [Parameter(Mandatory = $true, ParameterSetName = 'UserPrincipalName')]
         [Parameter(Mandatory = $true, ParameterSetName = 'UserObjectId')]
-        [string] $DocumentLibraryName,
+        [string] $DocumentLibrary,
 
         [Parameter(Mandatory = $false, ParameterSetName = 'UserPrincipalName')]
         [Parameter(Mandatory = $false, ParameterSetName = 'UserObjectId')]
@@ -41,7 +41,7 @@ function New-OneDriveShortcut {
         $SiteResource = ([uri]$Uri).AbsolutePath
 
         $SiteRequest = @{
-            Resource = "$($SiteDomain):$($SiteResource)"
+            Resource = "sites/${SiteDomain}:${SiteResource}"
             Method = [Microsoft.PowerShell.Commands.WebRequestMethod]::Get
         }
 
@@ -52,33 +52,49 @@ function New-OneDriveShortcut {
         $WebId = $SiteIdSplit[2]
 
         $DocumentLibraryRequest = @{
-            Resource = "sites/$($SiteIdRaw)/lists?`$filter=startsWith(displayName,'$($DocumentLibraryName)')"
+            Resource = "sites/${SiteIdRaw}/lists?`$filter=startsWith(displayName,'${DocumentLibrary}')"
             Method = [Microsoft.PowerShell.Commands.WebRequestMethod]::Get
         }
 
         $DocumentLibraryResponse = Invoke-ODSApiRequest @DocumentLibraryRequest
         $DocumentLibraryId = $DocumentLibraryResponse.value[0].id
+        $DocumentLibraryName = $DocumentLibraryResponse.value[0].name
 
         $ItemUniqueId = 'root'
+        $ItemUniqueName = $null
 
         if ($FolderPath) {
             $ItemUniqueIdUri = "$($Uri)/$($DocumentLibraryName)/$($FolderPath)"
-            $ItemUniqueIdUri = $ItemUniqueUri.replace('%', '%25')
+            $ItemUniqueIdUri = $ItemUniqueIdUri.replace(' ', '%20')
+            $ItemUniqueIdUri = $ItemUniqueIdUri.replace('%', '%25')
             $ItemUniqueIdRequest = @{
-                Resource = "sites/$($SiteIdRaw)/lists/$($DocumentLibraryId)/items?$expand=fields&$filter=contains(webUrl,'$($ItemUniqueIdUri)')"
+                Resource = "sites/${SiteIdRaw}/lists/${DocumentLibraryId}/items?`$expand=fields&`$filter=contains(webUrl,'${ItemUniqueIdUri}')"
                 Method = [Microsoft.PowerShell.Commands.WebRequestMethod]::Get
             }
-
-            $ItemUniqueIdResponse = Invoke-ODSApiRequest @$ItemUniqueIdRequest
-            $ItemUniqueId = $ItemUniqueIdResponse.value[0].id
+            
+            $ItemUniqueIdResponse = Invoke-ODSApiRequest @ItemUniqueIdRequest
+            $ItemUniqueId = (Select-String "[\da-zA-Z]{8}-([\da-zA-Z]{4}-){3}[\da-zA-Z]{12}" -InputObject $ItemUniqueIdResponse.value[0].eTag).Matches[0].Value
         }
 
         if (!($ShortcutName)) {
-            $ShortcutName = $DocumentLibraryName
+            if ($FolderPath) {
+                $ItemUniqueNameRequest = @{
+                    Resource = "sites/${SiteIdRaw}/lists/${DocumentLibraryId}/items/${ItemUniqueId}?`$expand=fields"
+                    Method = [Microsoft.PowerShell.Commands.WebRequestMethod]::Get
+                    DoNotUsePrefer = $true
+                }
+    
+                $ItemUniqueNameResponse = Invoke-ODSApiRequest @ItemUniqueNameRequest
+                $ItemUniqueName = $ItemUniqueNameResponse.fields.LinkFilename
+
+                $ShortcutName = $ItemUniqueName
+            } else {
+                $ShortcutName = $DocumentLibrary
+            }
         }
 
         $ShortcutRequest = @{
-            Resource = "drives/$($User)/root/children"
+            Resource = "drives/${User}/root/children"
             Method = [Microsoft.PowerShell.Commands.WebRequestMethod]::Post
             Body = @{
                 name = $ShortcutName
@@ -91,8 +107,8 @@ function New-OneDriveShortcut {
                         webId = $WebId
                     }
                 }
-                'microsoft.graph.conflictBehavior' = "rename"
-            }
+                '@microsoft.graph.conflictBehavior' = 'rename'
+            } | ConvertTo-Json
         }
 
         return (Invoke-ODSApiRequest @ShortcutRequest)
