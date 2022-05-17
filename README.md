@@ -28,10 +28,26 @@ Check out [CHANGELOG.md](CHANGELOG.md) to review the details of all releases.
 
 ## Installation
 
-Once released can get latest release of the OneDriveShortcuts module on the [PowerShell Gallery](https://www.powershellgallery.com)
+You can get latest release of the OneDriveShortcuts module on the [PowerShell Gallery](https://www.powershellgallery.com/packages/OneDriveShortcuts)
+
+```PowerShell
+Install-Module -Name OneDriveShortcuts
+```
+
+----------
+
+## Usage
+
+Example command:
+
+```powershell
+$Shortcut = Get-OneDriveShortcut -ShortcutName "Working Folder" -UserPrincipalName "user@contoso.com"
+```
+
+For more example commands, please refer to [USAGE.md](USAGE.md#examples).
 
 ----------
 
 ## Licensing
 
-oneShortcut is licensed under the [MIT license](LICENSE.md).
+OneDriveShortcuts is licensed under the [MIT license](LICENSE.md).
