@@ -44,6 +44,12 @@ Connect-ODS -TenantId "00000000-0000-0000-0000-000000000000" -ClientId "00000000
 Connect-ODS -TenantId "00000000-0000-0000-0000-000000000000" -ClientId "00000000-0000-0000-0000-000000000000" -ClientCertificate (Get-Item -Path 'Cert:\CurrentUser\My\0000000000000000000000000000000000000000)
 ```
 
+### Disconnecting
+
+```powershell
+Disconnect-ODS
+```
+
 ### Creating a new Shortcut to a Document Library
 
 ```powershell
