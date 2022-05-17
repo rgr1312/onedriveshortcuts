@@ -1,6 +1,7 @@
-# OneDrive Shortcuts PowerShell Module
+# OneDriveShortcuts PowerShell Module
 
 [![GitHub Release](https://badge.fury.io/gh/derpenstiltskin%2Fonedriveshortcuts.svg)](https://github.com/derpenstiltskin/onedriveshortcuts/releases)
+[![PowerShell Gallery Release](https://img.shields.io/powershellgallery/v/OneDriveShortcuts)](https://www.powershellgallery.com/packages/OneDriveShortcuts)
 [![License](https://img.shields.io/badge/license-MIT-green)](https://github.com/derpenstiltskin/onedriveshortcuts/blob/main/LICENSE.md)
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/derpenstiltskin/onedriveshortcuts)](https://github.com/derpenstiltskin/onedriveshortcuts/commits/main)
 
@@ -9,6 +10,7 @@
 *   [Overview](#overview)
 *   [What's New](#whats-new)
 *   [Installation](#installation)
+*   [Usage](#usage)
 *   [Licensing](#licensing)
 
 ----------

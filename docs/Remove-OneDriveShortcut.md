@@ -1,6 +1,6 @@
 ---
 external help file: OneDriveShortcuts-help.xml
-Module Name: onedriveshortcuts
+Module Name: OneDriveShortcuts
 online version: https://github.com/derpenstiltskin/onedriveshortcuts/blob/main/docs/Remove-OneDriveShortcut.md
 schema: 2.0.0
 ---
