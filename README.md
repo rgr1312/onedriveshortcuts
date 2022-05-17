@@ -44,7 +44,7 @@ Example command:
 $Shortcut = Get-OneDriveShortcut -ShortcutName "Working Folder" -UserPrincipalName "user@contoso.com"
 ```
 
-For more example commands, please refer to [USAGE.md](USAGE.md#examples).
+For more example commands, please refer to [USAGE.md](USAGE.md).
 
 ----------
 
