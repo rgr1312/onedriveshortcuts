@@ -20,13 +20,9 @@
 OneDriveShortcuts is a [PowerShell](https://microsoft.com/powershell) [module](https://technet.microsoft.com/en-us/library/dd901839.aspx)
 that provides CLI access to managing SharePoint shortcuts in OneDrive.
 
-----------
-
 ## What's New
 
 Check out [CHANGELOG.md](CHANGELOG.md) to review the details of all releases.
-
-----------
 
 ## Installation
 
@@ -35,8 +31,6 @@ You can get latest release of the OneDriveShortcuts module on the [PowerShell Ga
 ```PowerShell
 Install-Module -Name OneDriveShortcuts
 ```
-
-----------
 
 ## Usage
 
@@ -47,8 +41,6 @@ $Shortcut = Get-OneDriveShortcut -ShortcutName "Working Folder" -UserPrincipalNa
 ```
 
 For more example commands, please refer to [USAGE.md](USAGE.md).
-
-----------
 
 ## Licensing
 
