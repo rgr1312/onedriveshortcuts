@@ -14,12 +14,12 @@ Connects and creates a session to the Microsoft Graph API.
 
 ### ClientSecret (Default)
 ```
-Connect-ODS -TenantId <String> -ClientId <String> -ClientSecret <SecureString> [<CommonParameters>]
+Connect-ODS -TenantId <String> -ClientId <String> -ClientSecret <SecureString> -AzureCloudInstance <Integer> [<CommonParameters>]
 ```
 
 ### ClientCertificate
 ```
-Connect-ODS -TenantId <String> -ClientId <String> -ClientCertificate <X509Certificate2> [<CommonParameters>]
+Connect-ODS -TenantId <String> -ClientId <String> -ClientCertificate <X509Certificate2> -AzureCloudInstance <Integer> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -99,6 +99,21 @@ Aliases:
 Required: True
 Position: Named
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -AzureCloudInstance
+Species an integer that corresponds to an Azure Cloud Instance type (None = 0, AzurePublic = 1, AzureChina = 2, AzureGermany = 3, AzureUsGovernment = 4)
+
+```yaml
+Type: Integer
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: 1
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

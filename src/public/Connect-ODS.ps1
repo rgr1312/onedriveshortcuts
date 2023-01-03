@@ -13,7 +13,12 @@ function Connect-ODS {
         [securestring] $ClientSecret,
 
         [Parameter(Mandatory = $true, ParameterSetName = 'ClientCertificate')]
-        [System.Security.Cryptography.X509Certificates.X509Certificate2] $ClientCertificate
+        [System.Security.Cryptography.X509Certificates.X509Certificate2] $ClientCertificate,
+
+        [Parameter(Mandatory = $false, ParameterSetName = 'ClientSecret')]
+        [Parameter(Mandatory = $false, ParameterSetName = 'ClientCertificate')]
+        [ValidateRange(0,4)]
+        [int] $AzureCloudInstance = 1
     )
 
     begin {
@@ -24,7 +29,7 @@ function Connect-ODS {
         switch ($PsCmdlet.ParameterSetName) {
             'ClientSecret' {
                 try {
-                    $Token = Get-MsalToken -ClientId $ClientId -TenantId $TenantId -ClientSecret $ClientSecret
+                    $Token = Get-MsalToken -ClientId $ClientId -TenantId $TenantId -ClientSecret $ClientSecret -AzureCloudInstance $AzureCloudInstance
                     $PsCmdlet.SessionState.PSVariable.Set('_ODSToken', $Token)
                 } catch {
                     Write-Verbose $_
@@ -33,7 +38,7 @@ function Connect-ODS {
             }
             'ClientCertificate' {
                 try {
-                    $Token = Get-MsalToken -ClientId $ClientId -TenantId $TenantId -ClientCertificate $ClientCertificate
+                    $Token = Get-MsalToken -ClientId $ClientId -TenantId $TenantId -ClientCertificate $ClientCertificate -AzureCloudInstance $AzureCloudInstance
                     $PsCmdlet.SessionState.PSVariable.Set('_ODSToken', $Token)
                 } catch {
                     Write-Verbose $_
