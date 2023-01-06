@@ -31,28 +31,28 @@ The **New-OneDriveShortcut** function creates a shortcut in a user's OneDrive th
 
 ### Example 1: Create a shortcut to the root of a document library
 ```powershell
-PS C:\> New-OneDriveShortcut -SiteUrl "https://contoso.sharepoint.com/site/WorkingSite" -DocumentLibrary "Working Document Library" -UserPrincipalName "user@contoso.com"
+PS C:\> New-OneDriveShortcut -Uri "https://contoso.sharepoint.com/site/WorkingSite" -DocumentLibrary "Working Document Library" -UserPrincipalName "user@contoso.com"
 ```
 
 This command creates a shortcut called "Working Document Library" for the user "user@contoso.com" that points to the Document Library called "Working Document Library" on the SharePoint site "https://contoso.sharepoint.com/site/WorkingSite".
 
 ### Example 2: Create a shortcut to the root of a document library with a custom name
 ```powershell
-PS C:\> New-OneDriveShortcut -SiteUrl "https://contoso.sharepoint.com/site/WorkingSite" -DocumentLibrary "Working Document Library" -UserPrincipalName "user@contoso.com" -ShortcutName "Working DL"
+PS C:\> New-OneDriveShortcut -Uri "https://contoso.sharepoint.com/site/WorkingSite" -DocumentLibrary "Working Document Library" -UserPrincipalName "user@contoso.com" -ShortcutName "Working DL"
 ```
 
 This command creates a shortcut called "Working DL" for the user "user@contoso.com" that points to the Document Library called "Working Document Library" on the SharePoint site "https://contoso.sharepoint.com/site/WorkingSite".
 
 ### Example 3: Create a shortcut to a sub-folder of a document library
 ```powershell
-PS C:\> New-OneDriveShortcut -SiteUrl "https://contoso.sharepoint.com/site/WorkingSite" -DocumentLibrary "Working Document Library" -FolderPath "Working Folder" -UserPrincipalName "user@contoso.com"
+PS C:\> New-OneDriveShortcut -Uri "https://contoso.sharepoint.com/site/WorkingSite" -DocumentLibrary "Working Document Library" -FolderPath "Working Folder" -UserPrincipalName "user@contoso.com"
 ```
 
 This command creates a shortcut called "Working Folder" for the user "user@contoso.com" that points to the sub-folder "Working Folder" of the Document Library called "Working Document Library" on the SharePoint site "https://contoso.sharepoint.com/site/WorkingSite".
 
 ### Example 4: Create a shortcut to a sub-folder of a document library with a custom name
 ```powershell
-PS C:\> New-OneDriveShortcut -SiteUrl "https://contoso.sharepoint.com/site/WorkingSite" -DocumentLibrary "Working Document Library" -FolderPath "Working Folder" -UserPrincipalName "user@contoso.com" -ShortcutName "Working"
+PS C:\> New-OneDriveShortcut -Uri "https://contoso.sharepoint.com/site/WorkingSite" -DocumentLibrary "Working Document Library" -FolderPath "Working Folder" -UserPrincipalName "user@contoso.com" -ShortcutName "Working"
 ```
 
 This command creates a shortcut called "Working" for the user "user@contoso.com" that points to the sub-folder "Working Folder" of the Document Library called "Working Document Library" on the SharePoint site "https://contoso.sharepoint.com/site/WorkingSite".
