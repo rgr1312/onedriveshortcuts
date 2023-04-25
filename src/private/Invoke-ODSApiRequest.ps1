@@ -28,7 +28,7 @@ function Invoke-ODSApiRequest {
     process {
         $Request = @{
             Uri = "https://graph.microsoft.com/beta/$($Resource)"
-            ContentType = "application/json"
+            ContentType = "application/json; charset=utf-8"
             Headers = @{
                 Authorization = "Bearer $($Token.AccessToken)"
             }
